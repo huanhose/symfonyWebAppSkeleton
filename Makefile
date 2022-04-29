@@ -9,5 +9,8 @@ stop:
 	symfony server:stop
 	docker compose down
 
+.PHONY: build
+build:
+	npm run build
 
 
