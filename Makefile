@@ -13,4 +13,6 @@ stop:
 build:
 	npm run build
 
-
+.PHONY:stop
+test:
+	php bin/phpunit
