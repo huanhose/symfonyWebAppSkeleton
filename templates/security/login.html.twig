@@ -3,40 +3,82 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+<style>
+      .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+      }
+      
+      .form-signin .checkbox {
+        font-weight: 400;
+      }
+      
+      .form-signin .form-floating:focus-within {
+        z-index: 2;
+      }
+      
+      .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+      
+      .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+</style>
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+<div class="text-center">
+    <main class="form-signin">
+        <form method="post">
+            <img class="mb-4" src="{{ asset('build/images/me_love_full.png') }}" alt="" width="120">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.name }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" name="_remember_me"> Remember me
-            </label>
-        </div>
-    #}
+            <!-- EMAIL -->
+            <div class="form-floating">
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+                <label for="inputEmail">Email</label>
+            </div>    
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+            <!-- PASSWORD -->
+            <div class="form-floating">    
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+                <label for="inputPassword">Password</label>
+            </div>
+
+            <input type="hidden" name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            >
+
+            {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Remember me
+                    </label>
+                </div>
+            #}
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">
+                Sign in
+            </button>
+        </form>
+    </main>    
 {% endblock %}
