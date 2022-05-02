@@ -64,6 +64,23 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * Finds all users ordered by fields
+     * By default ordered by "name"
+     * 
+     * @psalm-param array<string, string>|null orderbyClauses
+     * @psalm-return list<T> The entities.
+     */
+    public function findAll(?array $orderbyClauses = null):array
+    {
+        //By default, order by name
+        if ($orderbyClauses == null) {
+            $orderbyClauses = ['name' => 'ASC'];
+        }
+
+        return $this->findBy([], $orderbyClauses);
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */
