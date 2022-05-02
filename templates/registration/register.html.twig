@@ -1,23 +1,45 @@
 {% extends 'base.html.twig' %}
+{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
 
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    <div class="container">
 
-    <h1>Register</h1>
+        <!-- Message Header -->
+        <div class="container mt-3">
+            <div class="row col-12">
+                <div class="col-2">
+                    <img src="{{ asset('build/images/me_hello2_full.png') }}" alt="" width="150">
+                </div>
+                <div class="col-10">
+                    <div class="alert alert-info mt-4">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam repudiandae sit architecto officiis, quo ipsam delectus et recusandae sint earum esse impedit optio deserunt deleniti libero nostrum minus numquam. Repellat?
+                    </div>
+                </div>    
+            </div>
+        </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.name) }}
-        {{ form_row(registrationForm.fullName) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        <hr class="mt-0"/>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+        <h1>Register</h1>
+
+        {% for flash_error in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+
+        <div class="container-sm mb-3" style="max-width:25rem"> 
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.name) }}
+            {{ form_row(registrationForm.fullName) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+            {{ form_row(registrationForm.agreeTerms) }}
+
+            <button type="submit" class="btn btn-primary">Register</button>
+        {{ form_end(registrationForm) }}
+        </div>
+    </div>
 {% endblock %}
