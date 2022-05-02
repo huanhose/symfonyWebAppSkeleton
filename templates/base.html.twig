@@ -45,6 +45,12 @@
             </div>
         </div>
     </header>
+
+    <!-- Show general success messages -->
+    {% for flash_success in app.flashes('success') %}
+        <div class="alert alert-success">{{ flash_success }}</div>
+    {% endfor %}
+
     {% endblock %}
 
     {% block body %}
