@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% form_theme userForm 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}User profile{% endblock %}
+
+{% block body %}
+<div class="container-sm mb-3" >
+    <h1>User <span>{{ userForm.name.vars.value }} </span></h1>
+
+    <!-- Register form Messages -->
+    {% for flashMessage in app.flashes('userProfileForm_notice') %}
+        <div class="alert alert-success" role="alert">{{ flashMessage }}</div>
+    {% endfor %}
+
+    <!-- Register form errors -->
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    {{ form_start(userForm) }}
+
+        {{ form_row(userForm.email) }}
+        {{ form_row(userForm.name) }}
+        {{ form_row(userForm.fullName) }}
+
+        <div>
+            <button type="submit" class="btn btn-primary" title="Save changes">Save changes</button>    
+            <a href="{{ path('users_user_profile', {id:userForm.vars.value.id}) }}" 
+                    class="btn btn-light m-3" title="Cancel modifications">
+                Cancel
+            </a>
+        </div>
+
+    {{ form_end(userForm) }}
+
+</div>
+
+{% endblock %}
