@@ -13,6 +13,11 @@ stop:
 build:
 	npm run build
 
-.PHONY:stop
+.PHONY:test
 test:
 	php bin/phpunit
+
+.PHONY:phpcs
+phpcs:
+	composer phpcs
+
