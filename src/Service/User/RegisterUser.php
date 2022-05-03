@@ -67,7 +67,7 @@ class RegisterUser
         // generate a signed url and email it to the user
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
             (new TemplatedEmail())
-                ->from(new Address('juanjose.penalva@gmail.com', 'AdminEmail'))
+                ->from(new Address('info@myApp.com', 'AdminEmail'))
                 ->to($user->getEmail())
                 ->subject('Please Confirm your Email')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
