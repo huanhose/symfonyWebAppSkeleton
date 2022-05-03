@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller\Backoffice;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

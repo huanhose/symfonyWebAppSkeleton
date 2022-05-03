@@ -13,7 +13,9 @@
     <table class="table table-striped table-hover">
         <caption class="caption-top">
             <strong>{{ list_users|length }} users</strong>
-            <span class="p-5"> <a href="#" title="Create a new user">New user</a> </span>
+            <span class="p-5"> 
+                <a href="{{ path('app_createUser') }}" title="Create a new user">New user</a> 
+            </span>
         </caption>    
         <thead>
             <tr>
