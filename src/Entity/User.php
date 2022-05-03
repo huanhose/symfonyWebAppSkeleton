@@ -90,6 +90,132 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function addRole(string $rol): self
+    {
+        if (! in_array($rol, $this->roles)) {
+            $this->roles[] = $rol;
+        }
+
+        return $this;
+    } 
+
+    public function deleteRole(string $rol):self
+    {
+        $index = array_search($rol, $this->roles);
+        if (false !== $index) {
+            array_splice($this->roles, $index, 1);
+        }
+        
+        return $this;
+    }
+
+    /**
+     * Get a list of defined system roles
+     * System roles are internals and not used by the app
+     *
+     * @return array
+     */
+    public static function getDefinedSystemRoles():array
+    {
+        return ['ROLE_USER', 'ROLE_VERIFIED_USER'];
+    }
+
+    /**
+     * Get a list of App defined roles
+     * Roles that have a sense in the domain of the App
+     * 
+     * @return array
+     */
+    public static function getDefinedAppRoles():array
+    {
+        return ['ROLE_ADMIN'];
+    }
+
+    /**
+     * Check is a role is an App role
+     *
+     * @param string $role
+     * @return boolean
+     */
+    private static function isAppRole(string $role):bool
+    {
+        return in_array($role, static::getDefinedAppRoles());
+    }
+
+    /**
+     * Return only user roles that are App roles
+     *
+     * @return array
+     */
+    public function getAppRoles():array
+    {
+        return array_intersect(
+            $this->getRoles(), 
+            static::getDefinedAppRoles()
+        );
+    }
+
+    /**
+     * Add an App role
+     * If role not is an App role, we throw an Exception
+     *
+     * @param string $role
+     * @return void
+     */
+    public function addAppRole(string $role)
+    {
+        if (! static::isAppRole($role)) {
+            throw new \Exception(" $role can`t be added as an App role");
+        }
+        
+        $this->addRole($role);
+    }
+
+    /**
+     * Delete an App role
+     * If role not is an App role, we throw an Exception
+     *
+     * @param string $role
+     * @return void
+     */
+    public function deleteAppRole(string $role)
+    {
+        if (! static::isAppRole($role)) {
+            throw new \Exception(" $role can`t be deleted as an App role");
+        }
+
+        $this->deleteRole($role);
+    }
+
+    /**
+     * Set a list of App Roles
+     * If an role in the list isn't an App role, an exception is thrown
+     * 
+     * @param array $listAppRoles
+     * @return void
+     */
+    public function setAppRoles(array $listAppRoles)
+    {
+        //Check roles to set are app roles
+        foreach ($listAppRoles as $role) {
+            if (! static::isAppRole($role)) {
+                throw new \Exception("An system role $role can't be assigned to the user");
+            }
+        }
+
+        $listUserSystemRoles = array_intersect(
+            $this->getRoles(),
+            static::getDefinedSystemRoles()
+        );
+        $newlistUserRoles = array_merge(
+            $listAppRoles,
+            $listUserSystemRoles
+        );
+
+        $this->setRoles($newlistUserRoles);
+    }
+
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -146,6 +272,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        //When user is verified, he adquires ROLE_VERIFIED_USER rol
+        if ($isVerified) {
+            $this->addRole('ROLE_VERIFIED_USER');
+        } else {
+            $this->deleteRole('ROLE_VERIFIED_USER');
+        }
 
         return $this;
     }
