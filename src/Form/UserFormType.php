@@ -28,13 +28,25 @@ class UserFormType extends AbstractType
                 'disabled' => true
             ])
             ->add('name')
-            ->add('fullName');
+            ->add('fullName')
+            ->add('listRoles', ChoiceType::class, [                
+                'mapped'    => false,
+                'required'  => false,
+                'expanded'  => true,
+                'multiple'  => true,
+                'disabled'  => ! $options['canAssignRoles'],
+                'label'     => 'List roles',
+                'choices' => [
+                        'Admin user'    => 'ROLE_ADMIN',
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'canAssignRoles' => false
         ]);
     }
 }

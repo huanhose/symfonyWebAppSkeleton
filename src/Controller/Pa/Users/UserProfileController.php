@@ -47,7 +47,8 @@ class UserProfileController extends AbstractController
 
         return $this->render('users/user_profile/user_profile.html.twig', [
             'controller_name' => 'UserProfileController',
-            'userForm' => $form->createView()
+            'userForm' => $form->createView(),
+            'canAssignRoles' => $this->canAssignRoles()
         ]);
     }
 
@@ -60,8 +61,13 @@ class UserProfileController extends AbstractController
      */
     private function loadDataFromUserToForm(User $user): FormInterface
     {
-        $form = $this->createForm(UserFormType::class, $user, []);
-        
+        $form = $this->createForm(UserFormType::class, $user, [
+            'canAssignRoles' => $this->canAssignRoles()
+        ]);
+
+        //After loaded common data, we load suported roles (that can be selected in profile) in form
+        $form->get('listRoles')->setData($user->getAppRoles());
+
         return $form;
     }
 
@@ -76,6 +82,11 @@ class UserProfileController extends AbstractController
      */
     private function saveFormDataIntoUser(EntityManager $entityManager, FormInterface $form, User $user)
     {   
+        if ($this->canAssignRoles()) {     
+            $listRoles = $form->get('listRoles')->getData();
+            $user->setAppRoles($listRoles);
+        }
+
         $entityManager->persist($user);
         $entityManager->flush();
     }
@@ -108,6 +119,17 @@ class UserProfileController extends AbstractController
      * @return boolean
      */
     private function isAdmin():bool
+    {
+        return $this->isGranted('ROLE_ADMIN');
+    }
+
+    /**
+     * Check if connected user can assign roles to user profile
+     * Only an admin can
+     * 
+     * @return boolean
+     */
+    private function canAssignRoles():bool
     {
         return $this->isGranted('ROLE_ADMIN');
     }
