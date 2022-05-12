@@ -12,7 +12,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityManager;
 use App\Entity\User;
 use App\Form\UserFormType;
-
+use App\Service\User\ModifyUser;
+use App\Service\User\ModifyUserDTO;
 
 /**
  * Form to edit user profile
@@ -21,8 +22,15 @@ use App\Form\UserFormType;
  */
 class UserProfileController extends AbstractController
 {
+    private ModifyUser $modifyUserService;
+
+    public function __construct(ModifyUser $modifyUserService)
+    {
+        $this->modifyUserService = $modifyUserService;
+    }
+
     #[Route('/pa/users/user/{id}', name: 'users_user_profile', requirements: ['id' => '\d+'])]
-    public function index(User $user, Request $request,  EntityManagerInterface $entityManager): Response
+    public function index(User $user, Request $request): Response
     {
         $this->checkUserAccess($user);
 
@@ -31,7 +39,7 @@ class UserProfileController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
                 
-            $this->saveFormDataIntoUser($entityManager, $form, $user);
+            $this->saveFormDataIntoUser($form, $user);
 
             //Message saved changes to form
             $this->addFlash(
@@ -72,23 +80,27 @@ class UserProfileController extends AbstractController
     }
 
     /**
-     * Get data from a form (form submit) and load them on a User instance
-     * and persist them in a repository
+     * Get data from a form (form submit) and call modifyUser service with these data
      *
-     * @param EntityManager $entityManager
      * @param FormInterface $form
      * @param User $user
      * @return void
      */
-    private function saveFormDataIntoUser(EntityManager $entityManager, FormInterface $form, User $user)
+    private function saveFormDataIntoUser(FormInterface $form, User $user)
     {   
+        $listRoles = null;
         if ($this->canAssignRoles()) {     
             $listRoles = $form->get('listRoles')->getData();
-            $user->setAppRoles($listRoles);
         }
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+        $userData = new ModifyUserDTO(
+            id: $user->getId(),
+            email: $user->getEmail(),
+            name: $user->getName(),
+            fullName: $user->getFullName(),
+            listAppRoles: $listRoles
+        );
+        $this->modifyUserService->__invoke($userData);    
     }
 
     /**

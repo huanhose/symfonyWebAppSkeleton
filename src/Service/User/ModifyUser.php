@@ -37,6 +37,10 @@ class ModifyUser
             $user->setFullName($userData->fullName);
         }
 
+        if (null !== $userData->listAppRoles) {
+            $user->setAppRoles($userData->listAppRoles);
+        }
+
         $this->entityManager->persist($user);
         $this->entityManager->flush();    
         
