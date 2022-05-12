@@ -36,10 +36,10 @@ class RegisterUserTest extends KernelTestCase
 
         //Call service
         $userData = new RegisterUserDTO(
-            $email = 'zulu@miemail.com',
-            $name = 'zulu',
-            $fullName = 'Zulu ambigu',
-            $password = '123456'
+            email : 'zulu@miemail.com',
+            name : 'zulu',
+            fullName : 'Zulu ambigu',
+            password : '123456'
         );
         $createdUser = $registerUserService($userData);
     
@@ -73,10 +73,10 @@ class RegisterUserTest extends KernelTestCase
         
         //Call service
         $userData = new RegisterUserDTO(
-            $email = '',
-            $name = 'zulu',
-            $fullName = 'Zulu ambigu',
-            $password = '123456'
+            email : '',
+            name : 'zulu',
+            fullName : 'Zulu ambigu',
+            password : '123456'
         );
         $this->expectException(\Exception::class);
         $createdUser = $registerUserService($userData);
@@ -94,10 +94,10 @@ class RegisterUserTest extends KernelTestCase
         
         //Call service
         $userData = new RegisterUserDTO(
-            $email = 'pepe@zulu.com',
-            $name = 'pepe',
-            $fullName = 'Zulu ambigu',
-            $password = ''
+            email : 'pepe@zulu.com',
+            name : 'pepe',
+            fullName : 'Zulu ambigu',
+            password : ''
         );
         $this->expectException(\Exception::class);
         $createdUser = $registerUserService($userData);
@@ -115,10 +115,10 @@ class RegisterUserTest extends KernelTestCase
         
         //Call service
         $userData = new RegisterUserDTO(
-            $email = 'pepe@zulu.com',
-            $name = '',
-            $fullName = 'Zulu ambigu',
-            $password = '123456'
+            email : 'pepe@zulu.com',
+            name : '',
+            fullName : 'Zulu ambigu',
+            password : '123456'
         );
         $this->expectException(\Exception::class);
         $createdUser = $registerUserService($userData);
@@ -136,10 +136,10 @@ class RegisterUserTest extends KernelTestCase
         
         //Call service
         $userData = new RegisterUserDTO(
-            $email = 'pepe@zulu.com',
-            $name = 'pepe',
-            $fullName = '',
-            $password = '123456'
+            email : 'pepe@zulu.com',
+            name : 'pepe',
+            fullName : '',
+            password : '123456'
         );
         $this->expectException(\Exception::class);
         $createdUser = $registerUserService($userData);
@@ -157,19 +157,19 @@ class RegisterUserTest extends KernelTestCase
         
         //We register user1
         $user1Data = new RegisterUserDTO(
-            $email = 'sameEmail@gmail.com',
-            $name = 'user1',
-            $fullName = 'User1 full name',
-            $password = '123456'
+            email : 'sameEmail@gmail.com',
+            name : 'user1',
+            fullName : 'User1 full name',
+            password : '123456'
         );
         $createdUser1 = $registerUserService($user1Data);
 
         //We register user2 with same email than user1
         $user2Data = new RegisterUserDTO(
-            $email = 'sameEmail@gmail.com',
-            $name = 'user2',
-            $fullName = 'User2 full name',
-            $password = '123456'
+            email : 'sameEmail@gmail.com',
+            name : 'user2',
+            fullName : 'User2 full name',
+            password : '123456'
         );
         $this->expectException(\Exception::class);
         $createdUser2 = $registerUserService($user2Data);
