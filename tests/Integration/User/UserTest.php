@@ -6,6 +6,9 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Doctrine\ORM\EntityManagerInterface; 
 
+/**
+ * Test User Entity with persistence layer
+ */
 class UserTest extends KernelTestCase
 {
     public function testCreateNewUserWithoutErrors()
@@ -21,14 +24,36 @@ class UserTest extends KernelTestCase
         $entityManager->persist($user);
         $entityManager->flush(); 
 
-        $this->assertTrue(true);
+        $userRepository = $this->getRepository();
+        $persistedUser = $userRepository->find($user->getId());
+
+        $this->assertEquals($user->getEmail(), $persistedUser->getEmail());
+        $this->assertEquals($user->getName(), $persistedUser->getName());
+        $this->assertEquals($user->getFullName(), $persistedUser->getFullName());        
     }
 
+    /**
+     * Get an Doctrine Entity Manager
+     *
+     * @return EntityManagerInterface
+     */
     private function getORMEntityManager(): EntityManagerInterface
     {
         $container = static::getContainer();
         $entityManager = $container->get('Doctrine\ORM\EntityManagerInterface');
         return $entityManager;
+    }
+
+    /**
+     * Get a User repository instance
+     *
+     * @return UserRepository
+     */
+    private function getRepository(): UserRepository
+    {
+        $container = static::getContainer();
+        $repository = $container->get('App\Repository\UserRepository');
+        return $repository;
     }
 }
 
