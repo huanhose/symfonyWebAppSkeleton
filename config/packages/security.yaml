@@ -17,6 +17,20 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
+        apilogin:
+            pattern: /api/login
+            stateless: true
+            json_login:
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern:   /api
+            stateless: true
+            jwt: ~  
+
         main:
             lazy: true
             provider: app_user_provider
@@ -35,12 +49,16 @@ security:
             login_throttling:
                 max_attempts: 3
                 interval: '15 minutes'
+            
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/backoffice, roles: ROLE_ADMIN } # Admin area
         - { path: ^/pa, roles: ROLE_USER } # Private Area, for auteh users
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: ROLE_ADMIN }
+
 
 when@test:
     security:

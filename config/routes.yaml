@@ -10,3 +10,6 @@ kernel:
 root:
     path: /
     controller: App\Controller\HomeController::index      
+
+api_login_check:
+    path: /api/login_check
