@@ -13,4 +13,7 @@ List of features :
 * PHPCs
 * PHPUnit. Integration tests run inside a transaction
 * Makefile with developer environment commands
+* A simple API example
+    * /api/...
+    * Api protected with JWT Auth. Only admin users can access api
 
