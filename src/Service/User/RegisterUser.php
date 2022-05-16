@@ -9,6 +9,7 @@ use Symfony\Component\Mime\Address;
 use App\Entity\User;
 use App\Service\User\RegisterUserDTO;
 use App\Security\EmailVerifier;
+use App\Service\Shared\DataValidator;
 
 /**
  * Service user case fro register a new user in App
@@ -25,14 +26,10 @@ class RegisterUser
     public function __invoke(RegisterUserDTO $userData):User
     {
         //Validate user data
-        if ($this->isEmptyString($userData->password)) {
+        $dataValidator = new DataValidator();
+
+        if ($dataValidator->isBlank($userData->password)) {
             throw new \Exception('You must provide a password');
-        }
-        if ($this->isEmptyString($userData->name)) {
-            throw new \Exception('You must provide a name');
-        }
-        if ($this->isEmptyString($userData->fullName)) {
-            throw new \Exception('You must provide a fulll name');
         }
 
         $user = new User();
@@ -73,15 +70,4 @@ class RegisterUser
                 ->htmlTemplate('registration/confirmation_email.html.twig')
         );
     } 
-
-    /**
-     * Check if a string is empty
-     *
-     * @param string $value
-     * @return boolean
-     */
-    private function isEmptyString(string $value):bool
-    {
-        return trim($value) === '';
-    }
 }
