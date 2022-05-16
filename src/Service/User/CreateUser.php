@@ -2,8 +2,10 @@
 namespace App\Service\User;
 
 use App\Entity\User;
+use App\Service\Shared\DataValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class CreateUser
 {
@@ -15,19 +17,9 @@ class CreateUser
 
     public function __invoke(CreateUserDTO $userData):User
     {
-        //Validate user data
-        if ($this->isEmptyString($userData->email)) {
-            throw new \Exception('You must provide an email');
-        }
-
-        if ($this->isEmptyString($userData->password)) {
+        $dataValidator = new DataValidator();
+        if ($dataValidator->isBlank($userData->password)) {
             throw new \Exception('You must provide a password');
-        }
-        if ($this->isEmptyString($userData->name)) {
-            throw new \Exception('You must provide a name');
-        }
-        if ($this->isEmptyString($userData->fullName)) {
-            throw new \Exception('You must provide a fulll name');
         }
 
         $user = new User();
@@ -50,16 +42,5 @@ class CreateUser
         $this->entityManager->flush();    
         
         return $user;
-    }
-
-    /**
-     * Check if a string is empty
-     *
-     * @param string $value
-     * @return boolean
-     */
-    private function isEmptyString(string $value):bool
-    {
-        return trim($value) === '';
     }
 }
