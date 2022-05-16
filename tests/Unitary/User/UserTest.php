@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unitary\User;
 
+use App\Entity\Exceptions\UserWithBlankNameException;
 use App\Entity\Exceptions\WrongEmailUserException;
 use App\Entity\User;
 use App\Service\Shared\DataValidator;
@@ -44,6 +45,18 @@ class UserTest extends TestCase
         $user = new User();
         $this->expectException(WrongEmailUserException::class);
         $user->setEmail($email);
+    }
+
+    /**
+     * @dataProvider  listEmtpyNamesDataProvider()
+     *
+     * @return void
+     */
+    public function testUserCantHaveEmptyName($name)
+    {
+        $user = new User();
+        $this->expectException(UserWithBlankNameException::class);
+        $user->setName($name);
     }
 
     public function testAddRole()
@@ -126,6 +139,14 @@ class UserTest extends TestCase
             ['@gmail'],
             ['jonas.smith'],
             ['http://www.me.com']
+        ];
+    }
+
+    public function listEmtpyNamesDataProvider()
+    {
+        return [
+            [''],
+            ['         ']
         ];
     }
 

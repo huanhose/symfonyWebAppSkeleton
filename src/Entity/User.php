@@ -6,6 +6,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\Exceptions\WrongEmailUserException;
+use App\Entity\Exceptions\UserWithBlankNameException;
 use App\Repository\UserRepository;
 use App\Service\Shared\DataValidator;
 
@@ -247,6 +248,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setName(string $name): self
     {
+        if ($this->dataValidator->isBlank($name, strict:true)) {
+            throw UserWithBlankNameException::create();
+        }
+
         $this->name = $name;
 
         return $this;
