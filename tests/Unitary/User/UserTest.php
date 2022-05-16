@@ -2,7 +2,9 @@
 
 namespace App\Tests\Unitary\User;
 
+use App\Entity\Exceptions\WrongEmailUserException;
 use App\Entity\User;
+use App\Service\Shared\DataValidator;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
@@ -30,6 +32,19 @@ class UserTest extends TestCase
         //A new user has ROLE_USER as default role
         $this->assertEquals(['ROLE_USER'], $user->getRoles());
     }   
+
+    /**
+     * @dataProvider listWrongEmailsDataProvider
+     *
+     * @param [type] $email
+     * @return void
+     */
+    public function testSetWrongEmail($email)
+    {
+        $user = new User();
+        $this->expectException(WrongEmailUserException::class);
+        $user->setEmail($email);
+    }
 
     public function testAddRole()
     {
@@ -102,6 +117,17 @@ class UserTest extends TestCase
         $this->assertNotContains($role_verified, $user->getRoles());
     }
 
+    public function listWrongEmailsDataProvider()
+    {        
+        return [
+            ['12345'],
+            ['aaaaaa'],
+            ['laura@gmail'],
+            ['@gmail'],
+            ['jonas.smith'],
+            ['http://www.me.com']
+        ];
+    }
 
 }
 

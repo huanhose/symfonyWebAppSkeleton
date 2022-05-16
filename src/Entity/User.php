@@ -1,18 +1,21 @@
 <?php
-
 namespace App\Entity;
 
-use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Entity\Exceptions\WrongEmailUserException;
+use App\Repository\UserRepository;
+use App\Service\Shared\DataValidator;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    private DataValidator $dataValidator; 
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -41,6 +44,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
+        $this->dataValidator = new DataValidator();
+
         $this->dateCreated = new \DateTime();
     }
 
@@ -55,7 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function setEmail(string $email): self
-    {
+    {        
+        if (! $this->dataValidator->isEmail($email)) {
+            throw WrongEmailUserException::onValue($email); 
+        }
+
         $this->email = $email;
 
         return $this;
