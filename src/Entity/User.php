@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 
+use App\Entity\Exceptions\UserWithBlankFullNameException;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -264,6 +265,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setFullName(string $fullName): self
     {
+        if ($this->dataValidator->isBlank($fullName, strict:true)) {
+            throw UserWithBlankFullNameException::create();
+        }
+
         $this->fullName = $fullName;
 
         return $this;
