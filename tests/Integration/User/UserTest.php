@@ -32,6 +32,27 @@ class UserTest extends KernelTestCase
         $this->assertEquals($user->getFullName(), $persistedUser->getFullName());        
     }
 
+    public function testFindByEmail()
+    {
+        //We create a user
+        $user = new User();
+        $user
+            ->setEmail('foo@me.com')
+            ->setName('foo')
+            ->setFullName('John Smith')
+            ->setPassword('123456');
+
+        $entityManager = $this->getORMEntityManager();
+        $entityManager->persist($user);
+        $entityManager->flush(); 
+
+        //We get user created, by email
+        $userRepository = $this->getRepository();
+        $userFound = $userRepository->findByEmail('foo@me.com');
+        $this->assertNotNull($userFound);
+        $this->assertEquals($user->getEmail(), $userFound->getEmail());
+    }
+
     /**
      * Get an Doctrine Entity Manager
      *
