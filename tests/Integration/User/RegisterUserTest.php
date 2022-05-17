@@ -202,13 +202,15 @@ class RegisterUserTest extends KernelTestCase
 
         $entityManager = $container->get('Doctrine\ORM\EntityManagerInterface');
         $userPasswordHasher = $container->get('Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface');
+        $eventDispatcher = $container->get('Symfony\Component\EventDispatcher\EventDispatcherInterface');
         //In case of email service, we create a mock
         $emailVerifier = $emailVerifierMock ?? $this->createEmailVerifierMock();
 
         $registerUserService = new RegisterUser(
             $entityManager,
             $userPasswordHasher,
-            $emailVerifier
+            $emailVerifier,
+            $eventDispatcher
         );
 
         return $registerUserService;

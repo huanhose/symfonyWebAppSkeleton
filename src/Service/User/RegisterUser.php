@@ -6,21 +6,25 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use App\Entity\User;
 use App\Service\User\RegisterUserDTO;
 use App\Security\EmailVerifier;
 use App\Service\Shared\DataValidator;
+use App\Event\AfterCreateUserEvent;
+
 
 /**
  * Service user case fro register a new user in App
  */
 class RegisterUser
 {
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, EmailVerifier $emailVerifier)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, EmailVerifier $emailVerifier, EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
         $this->emailVerifier = $emailVerifier;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(RegisterUserDTO $userData): User
@@ -48,6 +52,8 @@ class RegisterUser
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        $this->dispatchAfertCreateEvent($user);
+
         $this->sendEmailVerifierToUser($user);
 
         return $user;
@@ -72,4 +78,10 @@ class RegisterUser
                 ->htmlTemplate('registration/confirmation_email.html.twig')
         );
     }
+
+    private function dispatchAfertCreateEvent(User $user)
+    {
+        $event = new AfterCreateUserEvent($user);
+        $this->eventDispatcher->dispatch($event, 'user.after_create');
+    }    
 }

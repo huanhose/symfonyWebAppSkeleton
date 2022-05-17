@@ -2,18 +2,21 @@
 
 namespace App\Service\User;
 
-use App\Entity\User;
-use App\Service\Shared\DataValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\VarDumper\Cloner\Data;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Entity\User;
+use App\Event\AfterCreateUserEvent;
+use App\Service\Shared\DataValidator;
+
 
 class CreateUser
 {
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, EventDispatcherInterface $eventDispatcher)
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(CreateUserDTO $userData): User
@@ -42,6 +45,14 @@ class CreateUser
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        $this->dispatchAfertCreateEvent($user);
+
         return $user;
+    }
+
+    private function dispatchAfertCreateEvent(User $user)
+    {
+        $event = new AfterCreateUserEvent($user);
+        $this->eventDispatcher->dispatch($event, 'user.after_create');
     }
 }

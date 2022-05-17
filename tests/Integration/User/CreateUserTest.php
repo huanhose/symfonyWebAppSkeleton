@@ -200,10 +200,12 @@ class CreateUserTest extends KernelTestCase
         //We get dependencies
         $entityManager = $container->get('Doctrine\ORM\EntityManagerInterface');
         $userPasswordHasher = $container->get('Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface');
+        $eventDispatcher = $container->get('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $createUserService = new CreateUser(
             $entityManager,
-            $userPasswordHasher
+            $userPasswordHasher,
+            $eventDispatcher
         );
 
         return $createUserService;
