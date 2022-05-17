@@ -12,6 +12,7 @@ List of features :
 * Simple user administration
 * PHPCs
 * PHPUnit. Integration tests run inside a transaction
+* Example of Application E2E test. Test login form
 * Makefile with developer environment commands
 * A simple API example
     * /api/...
