@@ -12,8 +12,6 @@ class RegisterUserDTO
         public string $name,
         public string $fullName,
         public string $password,
-    )
-    {}
+    ) {
+    }
 }
-
-

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 
 use App\Entity\Exceptions\UserWithBlankFullNameException;
@@ -16,7 +17,7 @@ use App\Service\Shared\DataValidator;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    private DataValidator $dataValidator; 
+    private DataValidator $dataValidator;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -62,9 +63,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     public function setEmail(string $email): self
-    {        
+    {
         if (! $this->dataValidator->isEmail($email)) {
-            throw WrongEmailUserException::onValue($email); 
+            throw WrongEmailUserException::onValue($email);
         }
 
         $this->email = $email;
@@ -108,15 +109,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
-    } 
+    }
 
-    public function deleteRole(string $rol):self
+    public function deleteRole(string $rol): self
     {
         $index = array_search($rol, $this->roles);
         if (false !== $index) {
             array_splice($this->roles, $index, 1);
         }
-        
+
         return $this;
     }
 
@@ -126,7 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return array
      */
-    public static function getDefinedSystemRoles():array
+    public static function getDefinedSystemRoles(): array
     {
         return ['ROLE_USER', 'ROLE_VERIFIED_USER'];
     }
@@ -134,10 +135,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Get a list of App defined roles
      * Roles that have a sense in the domain of the App
-     * 
+     *
      * @return array
      */
-    public static function getDefinedAppRoles():array
+    public static function getDefinedAppRoles(): array
     {
         return ['ROLE_ADMIN'];
     }
@@ -148,7 +149,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @param string $role
      * @return boolean
      */
-    private static function isAppRole(string $role):bool
+    private static function isAppRole(string $role): bool
     {
         return in_array($role, static::getDefinedAppRoles());
     }
@@ -158,10 +159,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @return array
      */
-    public function getAppRoles():array
+    public function getAppRoles(): array
     {
         return array_intersect(
-            $this->getRoles(), 
+            $this->getRoles(),
             static::getDefinedAppRoles()
         );
     }
@@ -178,7 +179,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if (! static::isAppRole($role)) {
             throw new \Exception(" $role can`t be added as an App role");
         }
-        
+
         $this->addRole($role);
     }
 
@@ -201,7 +202,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Set a list of App Roles
      * If an role in the list isn't an App role, an exception is thrown
-     * 
+     *
      * @param array $listAppRoles
      * @return void
      */

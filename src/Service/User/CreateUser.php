@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\User;
 
 use App\Entity\User;
@@ -12,10 +13,10 @@ class CreateUser
     public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
     {
         $this->entityManager = $entityManager;
-        $this->userPasswordHasher = $userPasswordHasher;         
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
-    public function __invoke(CreateUserDTO $userData):User
+    public function __invoke(CreateUserDTO $userData): User
     {
         $dataValidator = new DataValidator();
         if ($dataValidator->isBlank($userData->password)) {
@@ -26,21 +27,21 @@ class CreateUser
         $user->setEmail($userData->email);
         $user->setName($userData->name);
         $user->setFullName($userData->fullName);
-        
+
         //Users created (not self registered) are considered as verified
         $user->setIsVerified(true);
-        
+
         //Set hashed password
         $user->setPassword(
             $this->userPasswordHasher->hashPassword(
                 $user,
                 $userData->password
             )
-        );     
-        
+        );
+
         $this->entityManager->persist($user);
-        $this->entityManager->flush();    
-        
+        $this->entityManager->flush();
+
         return $user;
     }
 }

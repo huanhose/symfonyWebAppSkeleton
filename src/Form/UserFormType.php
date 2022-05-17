@@ -29,7 +29,7 @@ class UserFormType extends AbstractType
             ])
             ->add('name')
             ->add('fullName')
-            ->add('listRoles', ChoiceType::class, [                
+            ->add('listRoles', ChoiceType::class, [
                 'mapped'    => false,
                 'required'  => false,
                 'expanded'  => true,
@@ -50,5 +50,3 @@ class UserFormType extends AbstractType
         ]);
     }
 }
-
-

@@ -29,10 +29,10 @@ class DefaultUsersFixtures extends Fixture
             $user,
             '123456'
         );
-        $user->setPassword($hashedPassword);       
+        $user->setPassword($hashedPassword);
         $user->setRoles(['ROLE_ADMIN']);
         $manager->persist($user);
-        
-        $manager->flush(); 
+
+        $manager->flush();
     }
 }

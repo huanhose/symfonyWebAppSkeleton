@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\Integration\User;
 
 use App\Entity\User;
@@ -9,7 +10,7 @@ use App\Service\User\CreateUserDTO;
 
 /**
  * Test the service Use Case CreateUser
- * CreateUser service is similar to Register User. To  create new users in backoffice. We don't send verifier email 
+ * CreateUser service is similar to Register User. To  create new users in backoffice. We don't send verifier email
  */
 class CreateUserTest extends KernelTestCase
 {
@@ -21,7 +22,7 @@ class CreateUserTest extends KernelTestCase
     /**
      * Test Create a new user
      * Normal case
-     * 
+     *
      * @return void
      */
     public function testCreateUser()
@@ -37,7 +38,7 @@ class CreateUserTest extends KernelTestCase
             password: '123456'
         );
         $createdUser = $createUserService($userData);
-    
+
         //Check data user created
         $this->assertEquals($userData->email, $createdUser->getEmail());
         $this->assertEquals($userData->name, $createdUser->getName());
@@ -49,7 +50,7 @@ class CreateUserTest extends KernelTestCase
         $this->assertEquals($userData->name, $persistedUser->getName());
         $this->assertEquals($userData->fullName, $persistedUser->getFullName());
 
-        //A user newly created is verified by default 
+        //A user newly created is verified by default
         $this->assertTrue($createdUser->isVerified());
 
         //A user newly created must has only a rol, ROLE_USER, and ROLE_VERIFIED_USER
@@ -69,7 +70,7 @@ class CreateUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $createUserService = $this->getCreateUserService();
-        
+
         //Call service
         $userData = new CreateUserDTO(
             email: '',
@@ -90,7 +91,7 @@ class CreateUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $createUserService = $this->getCreateUserService();
-        
+
         //Call service
         $userData = new CreateUserDTO(
             email: 'pepe@zulu.com',
@@ -111,7 +112,7 @@ class CreateUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $registerUserService = $this->getCreateUserService();
-        
+
         //Call service
         $userData = new CreateUserDTO(
             email: 'pepe@zulu.com',
@@ -132,7 +133,7 @@ class CreateUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $createUserService = $this->getCreateUserService();
-        
+
         //Call service
         $userData = new CreateUserDTO(
             email: 'pepe@zulu.com',
@@ -153,7 +154,7 @@ class CreateUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $createUserService = $this->getCreateUserService();
-        
+
         //We register user1
         $user1Data = new CreateUserDTO(
             email: 'sameEmail@gmail.com',
@@ -180,7 +181,7 @@ class CreateUserTest extends KernelTestCase
      * @param integer $id
      * @return User
      */
-    private function getUserById(int $id):User
+    private function getUserById(int $id): User
     {
         $container = static::getContainer();
         $userRepository = $container->get(UserRepository::class);
@@ -192,7 +193,7 @@ class CreateUserTest extends KernelTestCase
      *
      * @return CreateUser
      */
-    private function getCreateUserService():CreateUser
+    private function getCreateUserService(): CreateUser
     {
         $container = static::getContainer();
 
@@ -205,6 +206,6 @@ class CreateUserTest extends KernelTestCase
             $userPasswordHasher
         );
 
-        return $createUserService;   
+        return $createUserService;
     }
 }

@@ -67,11 +67,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     /**
      * Finds all users ordered by fields
      * By default ordered by "name"
-     * 
+     *
      * @psalm-param array<string, string>|null orderbyClauses
      * @psalm-return list<T> The entities.
      */
-    public function findAll(?array $orderbyClauses = null):array
+    public function findAll(?array $orderbyClauses = null): array
     {
         //By default, order by name
         if ($orderbyClauses == null) {
@@ -87,7 +87,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @param string $email
      * @return User|null
      */
-    public function findByEmail(string $email):?User
+    public function findByEmail(string $email): ?User
     {
         $list = $this->findBy(['email' => $email]);
         return $list[0] ?? null;

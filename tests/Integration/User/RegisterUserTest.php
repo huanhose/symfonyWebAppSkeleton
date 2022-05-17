@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\Integration\User;
 
 use App\Entity\User;
@@ -22,7 +23,7 @@ class RegisterUserTest extends KernelTestCase
     /**
      * Test register a new user
      * Normal case
-     * 
+     *
      * @return void
      */
     public function testRegisterUser()
@@ -42,7 +43,7 @@ class RegisterUserTest extends KernelTestCase
             password : '123456'
         );
         $createdUser = $registerUserService($userData);
-    
+
         //Check data user created
         $this->assertEquals($userData->email, $createdUser->getEmail());
         $this->assertEquals($userData->name, $createdUser->getName());
@@ -70,7 +71,7 @@ class RegisterUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $registerUserService = $this->getRegisterUserService();
-        
+
         //Call service
         $userData = new RegisterUserDTO(
             email : '',
@@ -91,7 +92,7 @@ class RegisterUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $registerUserService = $this->getRegisterUserService();
-        
+
         //Call service
         $userData = new RegisterUserDTO(
             email : 'pepe@zulu.com',
@@ -112,7 +113,7 @@ class RegisterUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $registerUserService = $this->getRegisterUserService();
-        
+
         //Call service
         $userData = new RegisterUserDTO(
             email : 'pepe@zulu.com',
@@ -133,7 +134,7 @@ class RegisterUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $registerUserService = $this->getRegisterUserService();
-        
+
         //Call service
         $userData = new RegisterUserDTO(
             email : 'pepe@zulu.com',
@@ -154,7 +155,7 @@ class RegisterUserTest extends KernelTestCase
     {
         //Get an instance of registerUser instance
         $registerUserService = $this->getRegisterUserService();
-        
+
         //We register user1
         $user1Data = new RegisterUserDTO(
             email : 'sameEmail@gmail.com',
@@ -181,7 +182,7 @@ class RegisterUserTest extends KernelTestCase
      * @param integer $id
      * @return User
      */
-    private function getUserById(int $id):User
+    private function getUserById(int $id): User
     {
         $container = static::getContainer();
         $userRepository = $container->get(UserRepository::class);
@@ -194,16 +195,16 @@ class RegisterUserTest extends KernelTestCase
      *
      * @return RegisterUser
      */
-    private function getRegisterUserService(?object $emailVerifierMock=null):RegisterUser
+    private function getRegisterUserService(?object $emailVerifierMock = null): RegisterUser
     {
         //We get dependencies of the service
         $container = static::getContainer();
-        
+
         $entityManager = $container->get('Doctrine\ORM\EntityManagerInterface');
         $userPasswordHasher = $container->get('Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface');
         //In case of email service, we create a mock
         $emailVerifier = $emailVerifierMock ?? $this->createEmailVerifierMock();
-        
+
         $registerUserService = new RegisterUser(
             $entityManager,
             $userPasswordHasher,
@@ -218,7 +219,7 @@ class RegisterUserTest extends KernelTestCase
      *
      * @return object
      */
-    private function createEmailVerifierMock():object
+    private function createEmailVerifierMock(): object
     {
         $emailVerifierMock = $this->getMockBuilder(EmailVerifier::class)
             ->disableOriginalConstructor()

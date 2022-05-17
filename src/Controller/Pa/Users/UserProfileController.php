@@ -38,7 +38,6 @@ class UserProfileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                
             $this->saveFormDataIntoUser($form, $user);
 
             //Message saved changes to form
@@ -63,7 +62,7 @@ class UserProfileController extends AbstractController
     /**
      * Load data from user for form class, to be rendered in the view
      * Return a new instance of FormInterface
-     * 
+     *
      * @param User $user
      * @return FormInterface
      */
@@ -87,9 +86,9 @@ class UserProfileController extends AbstractController
      * @return void
      */
     private function saveFormDataIntoUser(FormInterface $form, User $user)
-    {   
+    {
         $listRoles = null;
-        if ($this->canAssignRoles()) {     
+        if ($this->canAssignRoles()) {
             $listRoles = $form->get('listRoles')->getData();
         }
 
@@ -100,7 +99,7 @@ class UserProfileController extends AbstractController
             fullName: $user->getFullName(),
             listAppRoles: $listRoles
         );
-        $this->modifyUserService->__invoke($userData);    
+        $this->modifyUserService->__invoke($userData);
     }
 
     /**
@@ -127,10 +126,10 @@ class UserProfileController extends AbstractController
 
     /**
      * Check if connected user is an admin
-     * 
+     *
      * @return boolean
      */
-    private function isAdmin():bool
+    private function isAdmin(): bool
     {
         return $this->isGranted('ROLE_ADMIN');
     }
@@ -138,10 +137,10 @@ class UserProfileController extends AbstractController
     /**
      * Check if connected user can assign roles to user profile
      * Only an admin can
-     * 
+     *
      * @return boolean
      */
-    private function canAssignRoles():bool
+    private function canAssignRoles(): bool
     {
         return $this->isGranted('ROLE_ADMIN');
     }

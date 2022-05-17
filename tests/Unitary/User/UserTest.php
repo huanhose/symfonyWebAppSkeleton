@@ -30,10 +30,10 @@ class UserTest extends TestCase
         $this->assertEquals('foo@me.com', $user->getEmail());
         $this->assertEquals('foo', $user->getName());
         $this->assertEquals('John Smith', $user->getFullName());
-        
+
         //A new user has ROLE_USER as default role
         $this->assertEquals(['ROLE_USER'], $user->getRoles());
-    }   
+    }
 
     /**
      * @dataProvider listWrongEmailsDataProvider
@@ -144,7 +144,7 @@ class UserTest extends TestCase
     }
 
     public function listWrongEmailsDataProvider()
-    {        
+    {
         return [
             ['12345'],
             ['aaaaaa'],
@@ -162,6 +162,4 @@ class UserTest extends TestCase
             ['         ']
         ];
     }
-
 }
-

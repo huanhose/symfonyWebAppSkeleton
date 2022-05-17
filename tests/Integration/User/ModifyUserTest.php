@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\Integration\User;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -12,7 +13,7 @@ use App\Service\User\ModifyUserDTO;
 /**
  * Test ModifyUser Service  use case
  */
-class ModifyUserTest extends KernelTestCase 
+class ModifyUserTest extends KernelTestCase
 {
     protected function setUp(): void
     {
@@ -150,7 +151,7 @@ class ModifyUserTest extends KernelTestCase
         $modifiedUser = $modifyUserService($userData);
 
         //Check data user modified
-        $this->assertEquals($userData->name, $modifiedUser->getName());        
+        $this->assertEquals($userData->name, $modifiedUser->getName());
         $this->assertEquals($userData->fullName, $modifiedUser->getFullName());
 
         //Check non modified data
@@ -163,7 +164,7 @@ class ModifyUserTest extends KernelTestCase
      *
      * @return ModifyUser
      */
-    private function getModifyUserService():ModifyUser
+    private function getModifyUserService(): ModifyUser
     {
         $container = static::getContainer();
         $entityManager = $container->get('Doctrine\ORM\EntityManagerInterface');
@@ -178,7 +179,7 @@ class ModifyUserTest extends KernelTestCase
      * @param integer $id
      * @return User
      */
-    private function getUserById(int $id):User
+    private function getUserById(int $id): User
     {
         $container = static::getContainer();
 
@@ -191,7 +192,7 @@ class ModifyUserTest extends KernelTestCase
      *
      * @return CreateUser
      */
-    private function getCreateUserService(?object $emailVerifierMock=null):CreateUser
+    private function getCreateUserService(?object $emailVerifierMock = null): CreateUser
     {
         $container = static::getContainer();
 
@@ -204,8 +205,6 @@ class ModifyUserTest extends KernelTestCase
             $userPasswordHasher
         );
 
-        return $createUserService;   
+        return $createUserService;
     }
-
-
 }

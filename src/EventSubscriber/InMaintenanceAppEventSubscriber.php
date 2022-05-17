@@ -13,10 +13,9 @@ use Twig\Environment;
  */
 class InMaintenanceAppEventSubscriber implements EventSubscriberInterface
 {
-    
     public function __construct(Environment $twig, ContainerBagInterface $params)
     {
-        $this->twig = $twig;    
+        $this->twig = $twig;
         $this->params = $params;
     }
 
@@ -56,9 +55,9 @@ class InMaintenanceAppEventSubscriber implements EventSubscriberInterface
      *
      * @return boolean
      */
-    private function isMaintenanceModeApp():bool
-    {   
+    private function isMaintenanceModeApp(): bool
+    {
         //Read the config parameter
         return $this->params->get('app.maintenance');
-    }    
+    }
 }

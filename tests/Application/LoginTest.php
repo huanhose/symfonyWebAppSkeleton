@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\Application;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -22,33 +23,33 @@ class LoginTest extends WebTestCase
         StaticDriver::setKeepStaticConnections(true);
     }
 
-     public function testLoginSucessfull()
-     {
-        $client = static::createClient();     
-        
+    public function testLoginSucessfull()
+    {
+        $client = static::createClient();
+
         $crawler = $client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
 
         // retrieve the Form object for the form belonging to this button
         $form = $this->getLoginForm($crawler);
 
-        $testUser = $this->getTestUser(); 
+        $testUser = $this->getTestUser();
         $form['email'] = $testUser->user->getEmail();
         $form['password'] = $testUser->password;
         $client->submit($form);
 
         $this->assertResponseRedirects('/home');
-     }
+    }
 
      /**
       * We test an unautorized person can access the app
       *
       * @return void
       */
-     public function testLoginUnsucessfull()
-     {
-        $client = static::createClient();     
-        
+    public function testLoginUnsucessfull()
+    {
+        $client = static::createClient();
+
         $crawler = $client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
 
@@ -62,8 +63,7 @@ class LoginTest extends WebTestCase
 
         //Auth failed, return to login page
         $this->assertResponseRedirects('/login');
-
-     }
+    }
 
      /**
       * Get the login form in the Login page
@@ -72,12 +72,12 @@ class LoginTest extends WebTestCase
       * @param Crawler $crawler
       * @return form
       */
-     private function getLoginForm(Crawler $crawler):form
-     {
+    private function getLoginForm(Crawler $crawler): form
+    {
         $buttonCrawlerNode = $crawler->selectButton('Sign in');
         $form = $buttonCrawlerNode->form();
         return $form;
-     }
+    }
 
      /**
       * Get an existing user to use in test
@@ -87,19 +87,19 @@ class LoginTest extends WebTestCase
       *    'password' : to use in Login
       * ]
       */
-     private function  getTestUser():object
-     {
-         //A user we know that exist in a test database (fixtures)
+    private function getTestUser(): object
+    {
+        //A user we know that exist in a test database (fixtures)
         $userRepository = $this->getContainer()->get('App\Repository\UserRepository');
         $user = $userRepository->findByEmail('pepe@gmail.com');
-        
+
         if (null === $user) {
             throw new \Exception("'User 'pepe@gmail.com' not found in test database");
         }
 
         return (object) [
-            'user' => $user,
-            'password' => '123456'
+           'user' => $user,
+           'password' => '123456'
         ];
-     }
+    }
 }

@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Tests\Integration\User;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Doctrine\ORM\EntityManagerInterface; 
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Test User Entity with persistence layer
@@ -22,14 +23,14 @@ class UserTest extends KernelTestCase
 
         $entityManager = $this->getORMEntityManager();
         $entityManager->persist($user);
-        $entityManager->flush(); 
+        $entityManager->flush();
 
         $userRepository = $this->getRepository();
         $persistedUser = $userRepository->find($user->getId());
 
         $this->assertEquals($user->getEmail(), $persistedUser->getEmail());
         $this->assertEquals($user->getName(), $persistedUser->getName());
-        $this->assertEquals($user->getFullName(), $persistedUser->getFullName());        
+        $this->assertEquals($user->getFullName(), $persistedUser->getFullName());
     }
 
     public function testFindByEmail()
@@ -44,7 +45,7 @@ class UserTest extends KernelTestCase
 
         $entityManager = $this->getORMEntityManager();
         $entityManager->persist($user);
-        $entityManager->flush(); 
+        $entityManager->flush();
 
         //We get user created, by email
         $userRepository = $this->getRepository();
@@ -77,5 +78,3 @@ class UserTest extends KernelTestCase
         return $repository;
     }
 }
-
-

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Service\User;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,8 +21,8 @@ class ModifyUser
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke(ModifyUserDTO $userData):User
-    {        
+    public function __invoke(ModifyUserDTO $userData): User
+    {
         $user = $this->userRepository->find($userData->id);
 
         //Only set fields that are not null in DTO
@@ -42,8 +43,8 @@ class ModifyUser
         }
 
         $this->entityManager->persist($user);
-        $this->entityManager->flush();    
-        
+        $this->entityManager->flush();
+
         return $user;
     }
 }

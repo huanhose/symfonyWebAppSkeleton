@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Api;
 
 use App\Repository\UserRepository;
@@ -8,9 +9,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
-
 /**
- * API to manage Users. 
+ * API to manage Users.
  * CRUD operations
  */
 #[Route('/api/users/')]
@@ -37,7 +37,7 @@ class UsersEndpointController extends ApiController
      * GET users/
      * Get all users registered in the system
      * Return array of user objects
-     * 
+     *
      * @param UserRepository $userRepository
      * @param SerializerInterface $serializer
      * @return void

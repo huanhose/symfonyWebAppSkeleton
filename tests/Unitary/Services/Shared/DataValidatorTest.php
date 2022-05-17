@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Tests\Unitary\Service\Shared;
 
 use PHPUnit\Framework\TestCase;
@@ -15,9 +16,9 @@ class DataValidatorTest extends TestCase
     public function testListValidEmails($email)
     {
         $emailValidator = new DataValidator();
-         
+
         $this->assertTrue($emailValidator->isEmail($email));
-    }    
+    }
 
     /**
      * @dataProvider listWrongEmailsProvider
@@ -28,9 +29,9 @@ class DataValidatorTest extends TestCase
     public function testWrongEmails($email)
     {
         $emailValidator = new DataValidator();
-         
+
         $this->assertFalse($emailValidator->isEmail($email));
-    }    
+    }
 
     /**
      * Data provider: list of valid emails
@@ -41,7 +42,7 @@ class DataValidatorTest extends TestCase
     {
         return [
             ['foo@gmail.com'],
-            ['david.smith@subdomain.domain.uk']            
+            ['david.smith@subdomain.domain.uk']
         ];
     }
 
@@ -61,5 +62,4 @@ class DataValidatorTest extends TestCase
             ['http://www.me.com']
         ];
     }
-
 }
