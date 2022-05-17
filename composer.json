@@ -92,7 +92,8 @@
         ],
 
         "test" : "bin/phpunit",
-        "phpcs" : "vendor/bin/phpcs"
+        "phpcs" : "vendor/bin/phpcs",
+        "fixstyle" : "vendor/bin/phpcbf"
     },
     "conflict": {
         "symfony/symfony": "*"
