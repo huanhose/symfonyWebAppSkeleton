@@ -5,7 +5,7 @@ namespace App\EventSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Twig\Environment;
 
 /**
@@ -13,9 +13,11 @@ use Twig\Environment;
  */
 class InMaintenanceAppEventSubscriber implements EventSubscriberInterface
 {
-    public function __construct(Environment $twig)
+    
+    public function __construct(Environment $twig, ContainerBagInterface $params)
     {
         $this->twig = $twig;    
+        $this->params = $params;
     }
 
     public function onKernelRequest(RequestEvent $event)
@@ -48,11 +50,15 @@ class InMaintenanceAppEventSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * Check if de app is in maintenance
+     * Read config parameter
+     *
+     * @return boolean
+     */
     private function isMaintenanceModeApp():bool
     {   
-        //Read the "MAINTENANCE_APP" Env variable , must be set to 1
-        //@TODO This must be moved to a general App service
-        $maintenance_app = $_ENV['MAINTENANCE_APP'];
-        return $maintenance_app == '1';
+        //Read the config parameter
+        return $this->params->get('app.maintenance');
     }    
 }
