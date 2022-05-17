@@ -7,6 +7,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use App\Entity\User;
 use App\Service\User\RegisterUserDTO;
 use App\Security\EmailVerifier;
@@ -19,12 +20,19 @@ use App\Event\AfterCreateUserEvent;
  */
 class RegisterUser
 {
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, EmailVerifier $emailVerifier, EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        EntityManagerInterface $entityManager, 
+        UserPasswordHasherInterface $userPasswordHasher, 
+        EmailVerifier $emailVerifier, 
+        EventDispatcherInterface $eventDispatcher,
+        ContainerBagInterface $params
+    )
     {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
         $this->emailVerifier = $emailVerifier;
         $this->eventDispatcher = $eventDispatcher;
+        $this->params = $params;
     }
 
     public function __invoke(RegisterUserDTO $userData): User
@@ -72,11 +80,21 @@ class RegisterUser
             'app_verify_email',
             $user,
             (new TemplatedEmail())
-                ->from(new Address('info@myApp.com', 'AdminEmail'))
+                ->from(new Address($this->getWebAdminEmail(), 'AdminEmail'))
                 ->to($user->getEmail())
                 ->subject('Please Confirm your Email')
                 ->htmlTemplate('registration/confirmation_email.html.twig')
         );
+    }
+
+    /**
+     * Get Web Admin email from config
+     *
+     * @return string
+     */
+    private function getWebAdminEmail(): string
+    {
+        return $this->params->get('app.webadmin.email');
     }
 
     private function dispatchAfertCreateEvent(User $user)
