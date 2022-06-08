@@ -1,4 +1,5 @@
 when@dev:
+    #Method to see error pages in devel :  http://localhost/_error/{statusCode}
     _errors:
         resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
         prefix: /_error
