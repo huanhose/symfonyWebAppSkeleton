@@ -8,10 +8,10 @@ namespace App\Service\User;
 class CreateUserDTO
 {
     public function __construct(
-    public string $email,
-    public string $name,
-    public string $fullName,
-    public string $password,
+        public string $email,
+        public string $name,
+        public string $fullName,
+        public string $password,
     ) {
     }
 }

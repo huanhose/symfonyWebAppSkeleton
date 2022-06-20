@@ -14,20 +14,18 @@ use App\Security\EmailVerifier;
 use App\Service\Shared\DataValidator;
 use App\Event\AfterCreateUserEvent;
 
-
 /**
  * Service user case fro register a new user in App
  */
 class RegisterUser
 {
     public function __construct(
-        EntityManagerInterface $entityManager, 
-        UserPasswordHasherInterface $userPasswordHasher, 
-        EmailVerifier $emailVerifier, 
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EmailVerifier $emailVerifier,
         EventDispatcherInterface $eventDispatcher,
         ContainerBagInterface $params
-    )
-    {
+    ) {
         $this->entityManager = $entityManager;
         $this->userPasswordHasher = $userPasswordHasher;
         $this->emailVerifier = $emailVerifier;
@@ -101,5 +99,5 @@ class RegisterUser
     {
         $event = new AfterCreateUserEvent($user);
         $this->eventDispatcher->dispatch($event, 'user.after_create');
-    }    
+    }
 }

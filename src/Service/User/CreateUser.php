@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Event\AfterCreateUserEvent;
 use App\Service\Shared\DataValidator;
 
-
 class CreateUser
 {
     public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher, EventDispatcherInterface $eventDispatcher)
