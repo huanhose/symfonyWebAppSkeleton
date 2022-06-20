@@ -12,6 +12,8 @@ use App\Repository\UserRepository;
  */
 class ListUsersController extends AbstractController
 {
+    private UserRepository $userRepository;
+
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;

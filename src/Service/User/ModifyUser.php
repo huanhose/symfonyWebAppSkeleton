@@ -15,6 +15,10 @@ use Exception;
  */
 class ModifyUser
 {
+    private EntityManagerInterface $entityManager;
+    
+    private UserRepository $userRepository;
+
     public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository)
     {
         $this->entityManager = $entityManager;

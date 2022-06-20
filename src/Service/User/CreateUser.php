@@ -11,6 +11,12 @@ use App\Service\Shared\DataValidator;
 
 class CreateUser
 {
+    private EntityManagerInterface $entityManager;
+
+    private UserPasswordHasherInterface $userPasswordHasher;
+
+    private EventDispatcherInterface $eventDispatcher;
+
     public function __construct(
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $userPasswordHasher,

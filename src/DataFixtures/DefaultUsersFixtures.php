@@ -9,6 +9,8 @@ use App\Entity\User;
 
 class DefaultUsersFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $passwordHasher;
+
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;

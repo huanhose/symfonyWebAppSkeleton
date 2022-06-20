@@ -13,6 +13,10 @@ use Twig\Environment;
  */
 class InMaintenanceAppEventSubscriber implements EventSubscriberInterface
 {
+    private Environment $twig;
+    
+    private ContainerBagInterface $params;
+
     public function __construct(Environment $twig, ContainerBagInterface $params)
     {
         $this->twig = $twig;

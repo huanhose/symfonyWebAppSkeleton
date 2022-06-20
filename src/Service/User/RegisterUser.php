@@ -19,6 +19,18 @@ use App\Event\AfterCreateUserEvent;
  */
 class RegisterUser
 {
+    private EntityManagerInterface $entityManager;
+
+    private UserPasswordHasherInterface $userPasswordHasher;
+
+    private EmailVerifier $emailVerifier;
+
+    private EventDispatcherInterface $eventDispatcher;
+
+    private ContainerBagInterface $params;
+
+
+
     public function __construct(
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $userPasswordHasher,

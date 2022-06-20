@@ -15,6 +15,8 @@ use App\Entity\User;
  */
 class UserFormType extends AbstractType
 {
+    private Security $security;
+
     public function __construct(Security $security)
     {
         $this->security = $security;
