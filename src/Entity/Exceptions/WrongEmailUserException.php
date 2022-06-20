@@ -4,7 +4,7 @@ namespace App\Entity\Exceptions;
 
 use Exception;
 
-class WrongEmailUserException extends Exception
+final class WrongEmailUserException extends Exception
 {
     public static function onValue(string $email)
     {

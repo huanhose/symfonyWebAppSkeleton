@@ -4,7 +4,7 @@ namespace App\Entity\Exceptions;
 
 use Exception;
 
-class UserWithBlankNameException extends Exception
+final class UserWithBlankNameException extends Exception
 {
     public static function create()
     {
