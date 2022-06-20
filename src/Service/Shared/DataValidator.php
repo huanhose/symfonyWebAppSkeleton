@@ -32,11 +32,11 @@ class DataValidator
      * - ''
      * Optionally withn strci mode, an '   ' string is considered a blank value
      *
-     * @param [type] $value
+     * @param mixed $value
      * @param boolean $strict If true, a string with only spaces is considered blank
      * @return boolean
      */
-    public function isBlank($value, $strict = false): bool
+    public function isBlank(mixed $value, $strict = false): bool
     {
         if (
             null === $value

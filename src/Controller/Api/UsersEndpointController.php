@@ -21,9 +21,14 @@ class UsersEndpointController extends ApiController
      * GET users/{id}
      * Get user data identified by id
      * Returns User object
+     * 
+     * @param integer $id
+     * @param UserRepository $userRepository
+     * @param SerializerInterface $serializer
+     * @return JsonResponse
      */
     #[Route('{id}', name: 'users_getUser', requirements: ['id' => '\d+'], methods: 'GET')]
-    public function getUser(int $id, UserRepository $userRepository, SerializerInterface $serializer)
+    public function getUser(int $id, UserRepository $userRepository, SerializerInterface $serializer): JsonResponse
     {
         $user = $userRepository->find($id);
         if (null ===  $user) {
@@ -41,10 +46,10 @@ class UsersEndpointController extends ApiController
      *
      * @param UserRepository $userRepository
      * @param SerializerInterface $serializer
-     * @return void
+     * @return JsonResponse
      */
     #[Route('', name: 'users_getAllUser', methods: 'GET')]
-    public function getAllUsers(UserRepository $userRepository, SerializerInterface $serializer)
+    public function getAllUsers(UserRepository $userRepository, SerializerInterface $serializer): JsonResponse
     {
         $listUsers = $userRepository->findAll();
 

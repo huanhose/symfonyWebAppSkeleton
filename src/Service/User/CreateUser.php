@@ -58,7 +58,7 @@ class CreateUser
         return $user;
     }
 
-    private function dispatchAfertCreateEvent(User $user)
+    private function dispatchAfertCreateEvent(User $user): void
     {
         $event = new AfterCreateUserEvent($user);
         $this->eventDispatcher->dispatch($event, 'user.after_create');

@@ -7,7 +7,7 @@ use App\Entity\User;
 
 class AfterCreateUserEvent extends Event
 {
-    private $user;
+    private User $user;
 
     public function __construct(User $user)
     {

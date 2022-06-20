@@ -45,7 +45,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    private function registerUser(User $user)
+    private function registerUser(User $user): void
     {
         $userCreated = $this->registerUserService->__invoke(
             new RegisterUserDTO(

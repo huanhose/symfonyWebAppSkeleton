@@ -23,7 +23,7 @@ class InMaintenanceAppEventSubscriber implements EventSubscriberInterface
         $this->params = $params;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest(RequestEvent $event): void
     {
         if (! $this->isMaintenanceModeApp()) {
             return;
