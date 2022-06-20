@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -48,6 +49,7 @@ class UsersEndpointController extends ApiController
         $listUsers = $userRepository->findAll();
 
         $jsonData = $serializer->serialize($listUsers, 'json');
-        return JsonResponse::fromJsonString($jsonData);
+        $statusCode = (count($listUsers) == 0) ? Response::HTTP_NO_CONTENT : Response::HTTP_OK;
+        return JsonResponse::fromJsonString($jsonData, $statusCode);
     }
 }
